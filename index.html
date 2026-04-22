@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beautyus premium app</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg-soft: #111111;
+      --panel: rgba(255,255,255,0.04);
+      --panel-strong: rgba(255,255,255,0.06);
+      --line: rgba(255,255,255,0.10);
+      --line-soft: rgba(255,255,255,0.06);
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.68);
+      --soft: rgba(255,255,255,0.48);
+      --chip: rgba(255,255,255,0.08);
+      --accent: #ffffff;
+      --success: #7ef0b0;
+      --warning: #ffd37a;
+      --danger: #ff9f9f;
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --max: 1240px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 24%),
+        linear-gradient(180deg, #161616 0%, #0a0a0a 100%);
+      color: var(--text);
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+
+    .container {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .section { padding: 72px 0; }
+    .section-border { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.02); }
+    .section-bottom-border { border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.02); }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+      padding: 84px 0 88px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.03), transparent);
+    }
+
+    .grid-hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.70);
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      backdrop-filter: blur(12px);
+    }
+
+    h1 {
+      margin: 18px 0 0;
+      font-size: clamp(42px, 7vw, 72px);
+      line-height: 1.04;
+      font-weight: 650;
+      max-width: 760px;
+    }
+
+    .hero p.lead {
+      margin: 20px 0 0;
+      max-width: 740px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px 20px;
+      cursor: pointer;
+      transition: 180ms ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      border-color: transparent;
+      box-shadow: 0 10px 30px rgba(255,255,255,0.10);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .mini-stats,
+    .metrics,
+    .services-grid,
+    .pipeline-grid,
+    .history-grid,
+    .brand-grid,
+    .agenda-grid,
+    .export-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .mini-stats { margin-top: 34px; grid-template-columns: repeat(3, 1fr); }
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .services-grid { grid-template-columns: repeat(3, 1fr); }
+    .pipeline-grid { grid-template-columns: repeat(2, 1fr); }
+    .history-grid { grid-template-columns: repeat(3, 1fr); }
+    .brand-grid { grid-template-columns: repeat(3, 1fr); }
+    .agenda-grid { grid-template-columns: 110px 1fr; }
+    .export-grid { grid-template-columns: 1fr 1fr; }
+
+    .panel,
+    .card,
+    .metric,
+    .day,
+    .slot,
+    .list-item,
+    .tag,
+    .pill,
+    .action-tile,
+    .agenda-time,
+    .agenda-event,
+    .toast {
+      border: 1px solid var(--line);
+      background: var(--panel);
+    }
+
+    .panel {
+      border-radius: var(--radius-xl);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .panel-inner,
+    .card,
+    .booking-card,
+    .profile-card,
+    .table-wrap,
+    .note-box,
+    .action-box,
+    .toast-stack {
+      border-radius: var(--radius-lg);
+      background: rgba(10,10,10,0.86);
+      border: 1px solid var(--line);
+    }
+
+    .panel-inner,
+    .card,
+    .booking-card,
+    .profile-card,
+    .note-box,
+    .action-box {
+      padding: 20px;
+    }
+
+    .eyebrow {
+      margin: 0;
+      color: rgba(255,255,255,0.40);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.28em;
+    }
+
+    h2 {
+      margin: 10px 0 0;
+      font-size: clamp(28px, 4vw, 40px);
+      line-height: 1.15;
+      font-weight: 650;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.15;
+      font-weight: 620;
+    }
+
+    .section-head,
+    .row-head,
+    .card-head,
+    .space-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+    }
+
+    .card-head-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .section-copy,
+    .muted,
+    .help,
+    .table-sub,
+    .note {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .section-copy { max-width: 640px; font-size: 14px; }
+    .help, .table-sub, .note { font-size: 13px; color: var(--soft); }
+
+    .metric,
+    .card,
+    .day,
+    .action-tile,
+    .slot,
+    .list-item,
+    .agenda-time,
+    .agenda-event {
+      border-radius: 20px;
+      padding: 16px;
+    }
+
+    .metric small,
+    .label,
+    .field label,
+    .table-head,
+    .chip-small {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: rgba(255,255,255,0.45);
+    }
+
+    .metric .value {
+      margin-top: 10px;
+      font-size: 34px;
+      font-weight: 650;
+    }
+
+    .live,
+    .pill,
+    .tag,
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 12px;
+    }
+
+    .live {
+      background: rgba(126,240,176,0.12);
+      color: var(--success);
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      color: var(--soft);
+      background: rgba(255,255,255,0.04);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .service-top,
+    .field-row,
+    .profile-top,
+    .tag-row,
+    .action-row,
+    .inline-edit-row,
+    .agenda-event-top,
+    .export-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .service-meta {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: rgba(255,255,255,0.60);
+      font-size: 14px;
+    }
+
+    .services-grid .card .btn {
+      margin-top: 22px;
+      width: fit-content;
+      padding: 11px 16px;
+      border-radius: 14px;
+    }
+
+    .two-col,
+    .ops-grid,
+    .profile-grid {
+      display: grid;
+      gap: 24px;
+    }
+
+    .two-col { grid-template-columns: 0.95fr 1.05fr; }
+    .ops-grid { grid-template-columns: 1.1fr 0.9fr; }
+    .profile-grid { grid-template-columns: 0.8fr 1.2fr; }
+
+    .field {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .field .input,
+    .field select,
+    .field input,
+    .field textarea,
+    .inline-edit {
+      margin-top: 10px;
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,0.22);
+      color: var(--text);
+      padding: 14px 15px;
+      outline: none;
+    }
+
+    .field textarea {
+      min-height: 94px;
+      resize: vertical;
+    }
+
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .slot {
+      text-align: left;
+      cursor: pointer;
+      transition: 180ms ease;
+    }
+
+    .slot:hover { transform: translateY(-1px); }
+    .slot.available { background: rgba(255,255,255,0.05); }
+    .slot.booked { background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.35); border-color: var(--line-soft); cursor: not-allowed; }
+    .slot.pending { background: rgba(255,211,122,0.10); color: #ffe0a0; border-color: rgba(255,211,122,0.20); }
+    .slot.selected { outline: 2px solid rgba(255,255,255,0.34); }
+
+    .slot .time { font-weight: 650; }
+    .slot .sub { margin-top: 4px; font-size: 12px; color: rgba(255,255,255,0.58); }
+    .slot.booked .sub { color: rgba(255,255,255,0.34); }
+
+    .table-wrap { overflow: hidden; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 15px 16px;
+      text-align: left;
+      font-size: 14px;
+      border-bottom: 1px solid var(--line-soft);
+      vertical-align: middle;
+    }
+
+    th {
+      background: rgba(255,255,255,0.03);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(255,255,255,0.45);
+      font-weight: 500;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .pill,
+    .tag {
+      background: var(--chip);
+      color: rgba(255,255,255,0.82);
+    }
+
+    .automation-list,
+    .stack,
+    .list,
+    .agenda-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .day {
+      text-align: center;
+    }
+
+    .day .date {
+      margin-top: 8px;
+      font-size: 34px;
+      font-weight: 650;
+    }
+
+    .load-high { color: rgba(255,255,255,0.70); }
+    .load-medium { color: rgba(255,255,255,0.55); }
+    .load-full { color: #ffdca0; }
+    .load-low { color: rgba(255,255,255,0.42); }
+
+    .profile-top h3 { margin-bottom: 6px; }
+    .profile-meta { color: rgba(255,255,255,0.52); font-size: 14px; }
+    .stats-col { display: grid; gap: 12px; margin-top: 20px; }
+    .tag-row { margin-top: 18px; }
+    .action-row .btn { padding: 12px 18px; border-radius: 16px; }
+    .footer-space { height: 20px; }
+
+    .inline-edit {
+      margin-top: 0;
+      padding: 10px 12px;
+      min-width: 0;
+      font-size: 14px;
+    }
+
+    .agenda-list { margin-top: 8px; }
+
+    .agenda-time {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      min-height: 88px;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .agenda-event {
+      min-height: 88px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .agenda-event.empty {
+      opacity: 0.45;
+    }
+
+    .agenda-event-top {
+      justify-content: space-between;
+    }
+
+    .agenda-title {
+      font-weight: 650;
+      font-size: 15px;
+    }
+
+    .agenda-meta {
+      font-size: 13px;
+      color: rgba(255,255,255,0.58);
+    }
+
+    .status-available { color: var(--success); }
+    .status-booked { color: rgba(255,255,255,0.82); }
+    .status-pending { color: var(--warning); }
+
+    .toast-stack {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 9999;
+      display: grid;
+      gap: 12px;
+      padding: 12px;
+      width: min(360px, calc(100vw - 24px));
+      background: rgba(10,10,10,0.35);
+      backdrop-filter: blur(16px);
+    }
+
+    .toast {
+      border-radius: 18px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+      background: rgba(18,18,18,0.96);
+      animation: slideIn 220ms ease;
+    }
+
+    .toast.success { border-color: rgba(126,240,176,0.24); }
+    .toast.warning { border-color: rgba(255,211,122,0.24); }
+    .toast.error { border-color: rgba(255,159,159,0.24); }
+
+    .toast-title {
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .toast-body {
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 1120px) {
+      .grid-hero,
+      .two-col,
+      .ops-grid,
+      .profile-grid,
+      .brand-grid,
+      .export-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .history-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 760px) {
+      .section { padding: 56px 0; }
+      .hero { padding: 68px 0 64px; }
+      .container { width: min(var(--max), calc(100% - 20px)); }
+      .mini-stats,
+      .metrics,
+      .services-grid,
+      .slots-grid,
+      .pipeline-grid,
+      .history-grid,
+      .agenda-grid,
+      .export-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head,
+      .row-head,
+      .card-head,
+      .space-between,
+      .card-head-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      th, td { padding: 13px 12px; font-size: 13px; }
+      h3 { font-size: 22px; }
+      .toast-stack { right: 12px; bottom: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="container grid-hero">
+      <div>
+        <div class="badge">Beauty Studio CRM + Booking + Automation</div>
+        <h1>Beautyus premium app</h1>
+        <p class="lead">
+          O experiență premium pentru salon: imagine elegantă în fața clientei și control operațional complet în culise.
+          Programări reale, calendar, profiluri de cliente, follow-up automat, retenție și venit — toate într-un singur flux.
+        </p>
+        <div class="actions">
+          <a href="#booking" class="btn btn-primary">Book Experience</a>
+          <a href="#crm" class="btn btn-secondary">Open CRM</a>
+        </div>
+        <div class="mini-stats">
+          <div class="metric">
+            <small>Positioning</small>
+            <div class="value" style="font-size:18px; margin-top:12px;">Luxury beauty brand</div>
+          </div>
+          <div class="metric">
+            <small>Engine</small>
+            <div class="value" style="font-size:18px; margin-top:12px;">Booking + calendar + CRM</div>
+          </div>
+          <div class="metric">
+            <small>Outcome</small>
+            <div class="value" style="font-size:18px; margin-top:12px;">Retention &amp; repeat revenue</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-inner">
+          <div class="card-head-top">
+            <div>
+              <div style="font-size:15px; font-weight:600;">Today Overview</div>
+              <div class="help">Front desk + salon ops</div>
+            </div>
+            <div class="live">Live</div>
+          </div>
+          <div class="metrics">
+            <div class="metric">
+              <small>Programări azi</small>
+              <div class="value">26</div>
+              <div class="help">+12% vs săptămâna trecută</div>
+            </div>
+            <div class="metric">
+              <small>Rată confirmare</small>
+              <div class="value">91%</div>
+              <div class="help">după reminder automat</div>
+            </div>
+            <div class="metric">
+              <small>Venit lunar</small>
+              <div class="value">48.2k</div>
+              <div class="help">+18% lunar</div>
+            </div>
+            <div class="metric">
+              <small>Cliente recurente</small>
+              <div class="value">67%</div>
+              <div class="help">retenție activă</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head" style="margin-bottom: 28px;">
+        <div>
+          <p class="eyebrow">Client Experience</p>
+          <h2>Servicii prezentate premium</h2>
+        </div>
+        <p class="section-copy">
+          Structură clară de servicii, durată și preț orientativ, pregătită pentru rezervare rapidă și upsell către pachete premium.
+        </p>
+      </div>
+
+      <div class="services-grid">
+        <div class="card">
+          <div class="service-top"><strong>Hair Styling</strong><span class="chip">Hair</span></div>
+          <div class="service-meta"><span>60–120 min</span><span>de la 150 RON</span></div>
+          <button class="btn btn-secondary">Rezervă</button>
+        </div>
+        <div class="card">
+          <div class="service-top"><strong>Color &amp; Balayage</strong><span class="chip">Hair</span></div>
+          <div class="service-meta"><span>120–240 min</span><span>de la 350 RON</span></div>
+          <button class="btn btn-secondary">Rezervă</button>
+        </div>
+        <div class="card">
+          <div class="service-top"><strong>Nails</strong><span class="chip">Nails</span></div>
+          <div class="service-meta"><span>60–120 min</span><span>de la 120 RON</span></div>
+          <button class="btn btn-secondary">Rezervă</button>
+        </div>
+        <div class="card">
+          <div class="service-top"><strong>Make-up</strong><span class="chip">Make-up</span></div>
+          <div class="service-meta"><span>45–90 min</span><span>de la 180 RON</span></div>
+          <button class="btn btn-secondary">Rezervă</button>
+        </div>
+        <div class="card">
+          <div class="service-top"><strong>Facial Treatments</strong><span class="chip">Skin</span></div>
+          <div class="service-meta"><span>50–90 min</span><span>de la 220 RON</span></div>
+          <button class="btn btn-secondary">Rezervă</button>
+        </div>
+        <div class="card">
+          <div class="service-top"><strong>Brows &amp; Lashes</strong><span class="chip">Beauty</span></div>
+          <div class="service-meta"><span>30–60 min</span><span>de la 90 RON</span></div>
+          <button class="btn btn-secondary">Rezervă</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-border" id="booking">
+    <div class="container">
+      <div style="margin-bottom: 28px;">
+        <p class="eyebrow">Booking &amp; Calendar</p>
+        <h2>Variantă full: booking real + calendar live</h2>
+      </div>
+
+      <div class="two-col">
+        <div class="booking-card">
+          <div class="card-head-top">
+            <div>
+              <div style="font-size:18px; font-weight:600;">Booking Widget</div>
+              <div class="help">Alege serviciul, specialistul și intervalul disponibil</div>
+            </div>
+            <div class="pill">Realtime slots</div>
+          </div>
+
+          <div class="stack">
+            <div class="field">
+              <label>Service</label>
+              <select id="serviceSelect">
+                <option>Color &amp; Balayage</option>
+                <option>Hair Styling</option>
+                <option>Nails</option>
+                <option>Make-up</option>
+                <option>Facial Treatments</option>
+                <option>Brows &amp; Lashes</option>
+              </select>
+            </div>
+
+            <div class="field-row" style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+              <div class="field">
+                <label>Stylist</label>
+                <select id="stylistSelect">
+                  <option>Mara</option>
+                  <option>Ana</option>
+                  <option>Elena</option>
+                  <option>Ioana</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Date</label>
+                <input id="dateInput" type="date" value="2026-04-28" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Client Name</label>
+              <input id="clientName" type="text" value="Andreea Popescu" />
+            </div>
+
+            <div class="field-row" style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+              <div class="field">
+                <label>Phone</label>
+                <input id="clientPhone" type="text" value="+40 723 111 222" />
+              </div>
+              <div class="field">
+                <label>Email</label>
+                <input id="clientEmail" type="email" value="andreea@email.com" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Available Slots</label>
+              <div class="slots-grid" id="slotGrid">
+                <button class="slot available selected" data-status="Available" data-time="09:00" data-stylist="Mara" data-room="Hair Station 1">
+                  <div class="time">09:00</div>
+                  <div class="sub">Mara</div>
+                  <div class="sub">Hair Station 1</div>
+                </button>
+                <button class="slot booked" data-status="Booked" data-time="10:30" data-stylist="Ana" data-room="Skin Room">
+                  <div class="time">10:30</div>
+                  <div class="sub">Ana</div>
+                  <div class="sub">Skin Room</div>
+                </button>
+                <button class="slot available" data-status="Available" data-time="12:00" data-stylist="Elena" data-room="Nail Bar">
+                  <div class="time">12:00</div>
+                  <div class="sub">Elena</div>
+                  <div class="sub">Nail Bar</div>
+                </button>
+                <button class="slot booked" data-status="Booked" data-time="14:00" data-stylist="Ioana" data-room="Make-up Corner">
+                  <div class="time">14:00</div>
+                  <div class="sub">Ioana</div>
+                  <div class="sub">Make-up Corner</div>
+                </button>
+                <button class="slot available" data-status="Available" data-time="16:30" data-stylist="Mara" data-room="Hair Station 2">
+                  <div class="time">16:30</div>
+                  <div class="sub">Mara</div>
+                  <div class="sub">Hair Station 2</div>
+                </button>
+                <button class="slot pending" data-status="Pending" data-time="18:00" data-stylist="Ana" data-room="Skin Room">
+                  <div class="time">18:00</div>
+                  <div class="sub">Ana</div>
+                  <div class="sub">Skin Room</div>
+                </button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Booking Notes</label>
+              <textarea id="bookingNotes">Preferă programări după 17:00. Confirmare pe WhatsApp.</textarea>
+            </div>
+
+            <button class="btn btn-primary" id="confirmBookingBtn">Confirm Booking</button>
+          </div>
+        </div>
+
+        <div class="booking-card">
+          <div class="card-head-top">
+            <div>
+              <div style="font-size:18px; font-weight:600;">Calendar Overview</div>
+              <div class="help">Calendar pe ore, tip agendă, pentru echipă și camere</div>
+            </div>
+            <button class="btn btn-secondary" type="button" id="syncCalendarBtn">Sync calendar</button>
+          </div>
+
+          <div class="agenda-list" id="agendaList">
+            <div class="agenda-grid">
+              <div class="agenda-time">09:00</div>
+              <div class="agenda-event">
+                <div class="agenda-event-top">
+                  <div class="agenda-title">Andreea Popescu · Balayage Refresh</div>
+                  <div class="pill status-booked">Booked</div>
+                </div>
+                <div class="agenda-meta">Mara · Hair Station 1</div>
+              </div>
+            </div>
+            <div class="agenda-grid">
+              <div class="agenda-time">10:30</div>
+              <div class="agenda-event">
+                <div class="agenda-event-top">
+                  <div class="agenda-title">Consult facial · slot blocat</div>
+                  <div class="pill status-booked">Booked</div>
+                </div>
+                <div class="agenda-meta">Ana · Skin Room</div>
+              </div>
+            </div>
+            <div class="agenda-grid">
+              <div class="agenda-time">12:00</div>
+              <div class="agenda-event">
+                <div class="agenda-event-top">
+                  <div class="agenda-title">Disponibil pentru Nails</div>
+                  <div class="pill status-available">Available</div>
+                </div>
+                <div class="agenda-meta">Elena · Nail Bar</div>
+              </div>
+            </div>
+            <div class="agenda-grid">
+              <div class="agenda-time">14:00</div>
+              <div class="agenda-event">
+                <div class="agenda-event-top">
+                  <div class="agenda-title">Event Make-up</div>
+                  <div class="pill status-booked">Booked</div>
+                </div>
+                <div class="agenda-meta">Ioana · Make-up Corner</div>
+              </div>
+            </div>
+            <div class="agenda-grid">
+              <div class="agenda-time">16:30</div>
+              <div class="agenda-event">
+                <div class="agenda-event-top">
+                  <div class="agenda-title">Disponibil pentru Hair Styling</div>
+                  <div class="pill status-available">Available</div>
+                </div>
+                <div class="agenda-meta">Mara · Hair Station 2</div>
+              </div>
+            </div>
+            <div class="agenda-grid">
+              <div class="agenda-time">18:00</div>
+              <div class="agenda-event">
+                <div class="agenda-event-top">
+                  <div class="agenda-title">Confirmare în așteptare</div>
+                  <div class="pill status-pending">Pending</div>
+                </div>
+                <div class="agenda-meta">Ana · Skin Room</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-bottom-border" id="crm">
+    <div class="container">
+      <div style="margin-bottom: 28px;">
+        <p class="eyebrow">Operations Console</p>
+        <h2>CRM intern pentru echipă</h2>
+      </div>
+
+      <div class="ops-grid">
+        <div class="booking-card">
+          <div class="card-head-top">
+            <div>
+              <div style="font-size:18px; font-weight:600;">Client Desk</div>
+              <div class="help">Editare inline pentru nume, email și telefon + export mock data</div>
+            </div>
+            <div class="export-actions">
+              <button class="btn btn-secondary" type="button" id="exportJsonBtn">Export JSON</button>
+              <button class="btn btn-secondary" type="button" id="exportCsvBtn">Export CSV</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nume client</th>
+                  <th>Email</th>
+                  <th>Telefon</th>
+                  <th>Service</th>
+                  <th>Stylist</th>
+                  <th>Status</th>
+                  <th>Spend</th>
+                  <th>Next</th>
+                </tr>
+              </thead>
+              <tbody id="clientTableBody">
+                <tr data-id="1">
+                  <td><input class="inline-edit" data-field="name" value="Andreea Popescu" /></td>
+                  <td><input class="inline-edit" data-field="email" type="email" value="andreea@email.com" /></td>
+                  <td><input class="inline-edit" data-field="phone" value="+40 723 111 222" /></td>
+                  <td>Balayage Refresh</td>
+                  <td>Mara</td>
+                  <td><span class="pill">Confirmed</span></td>
+                  <td>1,280 RON</td>
+                  <td>28 Apr</td>
+                </tr>
+                <tr data-id="2">
+                  <td><input class="inline-edit" data-field="name" value="Bianca Ionescu" /></td>
+                  <td><input class="inline-edit" data-field="email" type="email" value="bianca@email.com" /></td>
+                  <td><input class="inline-edit" data-field="phone" value="+40 722 456 100" /></td>
+                  <td>Gel Nails</td>
+                  <td>Elena</td>
+                  <td><span class="pill">Needs Follow-up</span></td>
+                  <td>640 RON</td>
+                  <td>Today</td>
+                </tr>
+                <tr data-id="3">
+                  <td><input class="inline-edit" data-field="name" value="Diana Matei" /></td>
+                  <td><input class="inline-edit" data-field="email" type="email" value="diana@email.com" /></td>
+                  <td><input class="inline-edit" data-field="phone" value="+40 744 888 200" /></td>
+                  <td>Hydra Facial</td>
+                  <td>Ana</td>
+                  <td><span class="pill">VIP</span></td>
+                  <td>2,940 RON</td>
+                  <td>02 May</td>
+                </tr>
+                <tr data-id="4">
+                  <td><input class="inline-edit" data-field="name" value="Cristina Pavel" /></td>
+                  <td><input class="inline-edit" data-field="email" type="email" value="cristina@email.com" /></td>
+                  <td><input class="inline-edit" data-field="phone" value="+40 733 900 111" /></td>
+                  <td>Event Make-up</td>
+                  <td>Ioana</td>
+                  <td><span class="pill">Pending Deposit</span></td>
+                  <td>480 RON</td>
+                  <td>30 Apr</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="stack">
+          <div class="booking-card">
+            <div style="font-size:18px; font-weight:600;">Automation Layer</div>
+            <div class="help" style="margin-top:6px;">Fluxuri care cresc retenția fără muncă manuală repetitivă</div>
+            <div class="automation-list" style="margin-top:18px;">
+              <div class="list-item">Reminder automat cu 24h înainte de programare</div>
+              <div class="list-item">Mesaj post-vizită pentru review și feedback</div>
+              <div class="list-item">Reminder de revenire la 4–6 săptămâni</div>
+              <div class="list-item">Alertă internă pentru cliente VIP inactive</div>
+            </div>
+          </div>
+
+          <div class="booking-card">
+            <div style="font-size:18px; font-weight:600;">Revenue Pipeline</div>
+            <div class="help" style="margin-top:6px;">Lead → Booking → Follow-up → VIP retention</div>
+            <div class="pipeline-grid" style="margin-top:18px;">
+              <div class="card">
+                <strong>New Leads</strong>
+                <div class="list" style="margin-top:12px;">
+                  <div class="action-tile">2 solicitări bridal</div>
+                  <div class="action-tile">3 DM Instagram</div>
+                  <div class="action-tile">1 cerere voucher</div>
+                </div>
+              </div>
+              <div class="card">
+                <strong>Booked</strong>
+                <div class="list" style="margin-top:12px;">
+                  <div class="action-tile">8 confirmate azi</div>
+                  <div class="action-tile">5 pentru weekend</div>
+                  <div class="action-tile">3 cu avans</div>
+                </div>
+              </div>
+              <div class="card">
+                <strong>Follow-up</strong>
+                <div class="list" style="margin-top:12px;">
+                  <div class="action-tile">4 fără răspuns</div>
+                  <div class="action-tile">2 rebooking nail care</div>
+                  <div class="action-tile">1 abonament facial</div>
+                </div>
+              </div>
+              <div class="card">
+                <strong>VIP Retention</strong>
+                <div class="list" style="margin-top:12px;">
+                  <div class="action-tile">3 cliente inactive</div>
+                  <div class="action-tile">2 oferte personalizate</div>
+                  <div class="action-tile">1 aniversare clientă</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div style="margin-bottom: 28px;">
+        <p class="eyebrow">Client Profile</p>
+        <h2>Profil client complet</h2>
+      </div>
+
+      <div class="profile-grid">
+        <div class="profile-card">
+          <div class="profile-top">
+            <div>
+              <h3>Andreea Popescu</h3>
+              <div class="profile-meta">andreea@email.com</div>
+              <div class="profile-meta">+40 723 111 222</div>
+            </div>
+            <div class="pill">Confirmed</div>
+          </div>
+
+          <div class="stats-col">
+            <div class="field">
+              <label>Last Visit</label>
+              <div class="input">02 Apr 2026</div>
+            </div>
+            <div class="field">
+              <label>Current Service</label>
+              <div class="input">Balayage Refresh</div>
+            </div>
+            <div class="field">
+              <label>Lifetime Spend</label>
+              <div class="input">1,280 RON</div>
+            </div>
+          </div>
+
+          <div class="tag-row">
+            <span class="tag">VIP</span>
+            <span class="tag">Color Client</span>
+            <span class="tag">High Retention</span>
+          </div>
+        </div>
+
+        <div class="stack">
+          <div class="note-box">
+            <div style="font-size:18px; font-weight:600;">Client Notes</div>
+            <p class="note" style="margin-top:12px;">
+              Preferă programări după 17:00. Sensibilitate la produse cu parfum puternic. Confirmarea se face mai rapid prin WhatsApp.
+            </p>
+          </div>
+
+          <div class="note-box">
+            <div style="font-size:18px; font-weight:600;">Service History</div>
+            <div class="history-grid" style="margin-top:16px;">
+              <div class="action-tile">Balayage Luxury</div>
+              <div class="action-tile">Gloss Refresh</div>
+              <div class="action-tile">Blowout Finish</div>
+            </div>
+          </div>
+
+          <div class="action-box">
+            <div class="action-row">
+              <button class="btn btn-primary">Create booking</button>
+              <button class="btn btn-secondary">Send reminder</button>
+              <button class="btn btn-secondary">Add note</button>
+              <button class="btn btn-secondary">Open invoice</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="brand-grid">
+        <div class="card">
+          <p class="eyebrow" style="margin:0;">Brand</p>
+          <h3 style="margin-top:12px;">Luxury-first identity</h3>
+          <p class="note" style="margin-top:12px;">
+            Aspect premium, editorial, feminin și memorabil pentru un salon care vrea să vândă experiență, nu doar sloturi în calendar.
+          </p>
+        </div>
+        <div class="card">
+          <p class="eyebrow" style="margin:0;">System</p>
+          <h3 style="margin-top:12px;">Single-screen workflow</h3>
+          <p class="note" style="margin-top:12px;">
+            Programări, statusuri, task-uri, retenție și follow-up în același spațiu, ca echipa să decidă rapid și să execute fără haos.
+          </p>
+        </div>
+        <div class="card">
+          <p class="eyebrow" style="margin:0;">Growth</p>
+          <h3 style="margin-top:12px;">Retention by design</h3>
+          <p class="note" style="margin-top:12px;">
+            Reminder-ele, rebooking-ul și segmentarea VIP transformă vizitele punctuale în relații recurente și venit predictibil.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+  <div class="footer-space"></div>
+
+  <script>
+    const slots = document.querySelectorAll('.slot');
+    const stylistSelect = document.getElementById('stylistSelect');
+    const confirmBookingBtn = document.getElementById('confirmBookingBtn');
+    const syncCalendarBtn = document.getElementById('syncCalendarBtn');
+    const exportJsonBtn = document.getElementById('exportJsonBtn');
+    const exportCsvBtn = document.getElementById('exportCsvBtn');
+    const toastStack = document.getElementById('toastStack');
+    const clientTableBody = document.getElementById('clientTableBody');
+
+    let selectedSlot = document.querySelector('.slot.selected');
+
+    const mockClients = [
+      {
+        id: '1',
+        name: 'Andreea Popescu',
+        email: 'andreea@email.com',
+        phone: '+40 723 111 222',
+        service: 'Balayage Refresh',
+        stylist: 'Mara',
+        status: 'Confirmed',
+        spend: '1,280 RON',
+        next: '28 Apr'
+      },
+      {
+        id: '2',
+        name: 'Bianca Ionescu',
+        email: 'bianca@email.com',
+        phone: '+40 722 456 100',
+        service: 'Gel Nails',
+        stylist: 'Elena',
+        status: 'Needs Follow-up',
+        spend: '640 RON',
+        next: 'Today'
+      },
+      {
+        id: '3',
+        name: 'Diana Matei',
+        email: 'diana@email.com',
+        phone: '+40 744 888 200',
+        service: 'Hydra Facial',
+        stylist: 'Ana',
+        status: 'VIP',
+        spend: '2,940 RON',
+        next: '02 May'
+      },
+      {
+        id: '4',
+        name: 'Cristina Pavel',
+        email: 'cristina@email.com',
+        phone: '+40 733 900 111',
+        service: 'Event Make-up',
+        stylist: 'Ioana',
+        status: 'Pending Deposit',
+        spend: '480 RON',
+        next: '30 Apr'
+      }
+    ];
+
+    function showToast(title, body, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `
+        <div class="toast-title">${title}</div>
+        <div class="toast-body">${body}</div>
+      `;
+      toastStack.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = '180ms ease';
+        setTimeout(() => toast.remove(), 180);
+      }, 3200);
+    }
+
+    function updateMockClient(id, field, value) {
+      const client = mockClients.find((item) => item.id === id);
+      if (!client) return;
+      client[field] = value;
+    }
+
+    function downloadFile(filename, content, mimeType) {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportMockDataAsJson() {
+      const json = JSON.stringify(mockClients, null, 2);
+      downloadFile('beautyos-mock-data.json', json, 'application/json;charset=utf-8;');
+      showToast('Export JSON gata', 'Mock data a fost descărcat în format JSON.', 'success');
+    }
+
+    function exportMockDataAsCsv() {
+      const headers = ['id', 'name', 'email', 'phone', 'service', 'stylist', 'status', 'spend', 'next'];
+      const rows = mockClients.map((client) => headers.map((header) => {
+        const value = String(client[header] ?? '');
+        return `"${value.replace(/"/g, '""')}"`;
+      }).join(','));
+      const csv = [headers.join(','), ...rows].join('\n');
+      downloadFile('beautyos-mock-data.csv', csv, 'text/csv;charset=utf-8;');
+      showToast('Export CSV gata', 'Mock data a fost descărcat în format CSV.', 'success');
+    }
+
+    slots.forEach((slot) => {
+      slot.addEventListener('click', () => {
+        if (slot.dataset.status === 'Booked') return;
+        slots.forEach((s) => s.classList.remove('selected'));
+        slot.classList.add('selected');
+        selectedSlot = slot;
+        stylistSelect.value = slot.dataset.stylist;
+        showToast('Interval selectat', `${slot.dataset.time} · ${slot.dataset.stylist} · ${slot.dataset.room}`, 'success');
+      });
+    });
+
+    stylistSelect.addEventListener('change', () => {
+      const value = stylistSelect.value;
+      const matchingSlot = Array.from(slots).find((slot) => slot.dataset.stylist === value && slot.dataset.status !== 'Booked');
+      if (matchingSlot) {
+        slots.forEach((s) => s.classList.remove('selected'));
+        matchingSlot.classList.add('selected');
+        selectedSlot = matchingSlot;
+        showToast('Stylist actualizat', `Am selectat primul interval disponibil pentru ${value}.`, 'success');
+      } else {
+        showToast('Fără interval disponibil', `Nu există slot liber pentru ${value}.`, 'warning');
+      }
+    });
+
+    confirmBookingBtn.addEventListener('click', () => {
+      const clientName = document.getElementById('clientName').value.trim() || 'Client';
+      const service = document.getElementById('serviceSelect').value;
+      const stylist = document.getElementById('stylistSelect').value;
+      const date = document.getElementById('dateInput').value;
+      const slotTime = selectedSlot ? selectedSlot.dataset.time : '—';
+      showToast(
+        'Booking confirmat',
+        `${clientName} · ${service} · ${stylist} · ${date} · ${slotTime}`,
+        'success'
+      );
+    });
+
+    syncCalendarBtn.addEventListener('click', () => {
+      showToast('Calendar sincronizat', 'Agenda pe ore a fost actualizată din mock schedule.', 'success');
+    });
+
+    clientTableBody.addEventListener('input', (event) => {
+      const target = event.target;
+      if (!target.classList.contains('inline-edit')) return;
+
+      const row = target.closest('tr');
+      const id = row?.dataset.id;
+      const field = target.dataset.field;
+      const value = target.value.trim();
+
+      if (!id || !field) return;
+      updateMockClient(id, field, value);
+    });
+
+    clientTableBody.addEventListener('change', (event) => {
+      const target = event.target;
+      if (!target.classList.contains('inline-edit')) return;
+
+      const labelMap = {
+        name: 'Nume client',
+        email: 'Email',
+        phone: 'Telefon'
+      };
+
+      showToast('Date client actualizate', `${labelMap[target.dataset.field] || 'Câmp'} salvat cu succes.`, 'success');
+    });
+
+    exportJsonBtn.addEventListener('click', exportMockDataAsJson);
+    exportCsvBtn.addEventListener('click', exportMockDataAsCsv);
+  </script>
+</body>
+</html>
